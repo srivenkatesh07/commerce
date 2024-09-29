@@ -2,16 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { getTotalItems } = useCart();
 
   const handleLogout = () => {
     logout();
     navigate('/');
     window.location.reload();
   }; 
+  const itemCount = getTotalItems();
 
   return (
     <nav>
@@ -49,7 +52,7 @@ const Navbar = () => {
 
         <li style={{ marginRight: '20px' }}>
           {user !=undefined && user.role != undefined && user.role !=null && user.role !== "admin" ? (
-            <Link to="/cart">Cart</Link>
+            <Link to="/cart">Cart {itemCount > 0 && `(${itemCount})`}</Link>
           ) : null}
         </li>
 

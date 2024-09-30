@@ -35,4 +35,14 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/userList', async (req, res) => {
+  try {
+    // Fetch only users with the role of 'customer'
+    const customers = await User.find({ role: 'customer' }).select('-password'); // Exclude password
+    res.json(customers);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching customers.' });
+  }
+});
+
 module.exports = router;

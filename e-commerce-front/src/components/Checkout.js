@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import './Checkout.css';
 
 const Checkout = () => {
   const { cart, clearCart } = useCart();
@@ -50,20 +51,20 @@ const Checkout = () => {
       navigate('/order-summary', { state: { ...orderDetails, cart } });
     } catch (error) {
       console.error('Error processing order:', error);
-      setError('Failed to process your order. Please try again.'); // Set error message
+      setError('Failed to process your order. Please try again.');
     }
   };
 
   if (cart.length === 0) {
-    return <p>Your cart is empty. Please add items to the cart.</p>;
+    return <p className="empty-cart-message">Your cart is empty. Please add items to the cart.</p>;
   }
 
   return (
-    <div>
+    <div className="checkout-container">
       <h2>Checkout</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={(e) => { e.preventDefault(); handlePlaceOrder(); }}>
-        <div>
+      {error && <p className="error-message">{error}</p>}
+      <form onSubmit={(e) => { e.preventDefault(); handlePlaceOrder(); }} className="checkout-form">
+        <div className="form-group">
           <label>Name:</label>
           <input
             type="text"
@@ -72,7 +73,7 @@ const Checkout = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Address:</label>
           <textarea
             value={address}
@@ -80,25 +81,25 @@ const Checkout = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Payment Method:</label>
           <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
             <option value="Cash">Cash</option>
           </select>
         </div>
-        <button type="submit">Place Order</button>
+        <button type="submit" className="place-order-button">Place Order</button>
       </form>
 
       <h3>Your Cart:</h3>
-      <ul>
+      <ul className="cart-list">
         {cart.map(item => (
-          <li key={item.productId}>
-            {item.productName} - ${item.sellingPrice} x {item.quantity}
+          <li key={item.productId} className="cart-item">
+            {item.productName} - ${item.sellingPrice.toFixed(2)} x {item.quantity}
           </li>
         ))}
       </ul>
-      <h4>
-        Total: ${cart.reduce((total, item) => total + item.sellingPrice * item.quantity, 0)}
+      <h4 className="total-amount">
+        Total: ${cart.reduce((total, item) => total + item.sellingPrice * item.quantity, 0).toFixed(2)}
       </h4>
     </div>
   );

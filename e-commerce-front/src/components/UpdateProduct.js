@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import './UpdateProduct.css'; // Import CSS for styling
 
 const UpdateProduct = () => {
   const { productId } = useParams();
@@ -51,6 +52,7 @@ const UpdateProduct = () => {
     setUpdating(true);
     setError('');
 
+    // Validate non-negative values
     if (
       product.originalPrice < 0 ||
       product.discountPrice < 0 ||
@@ -63,8 +65,7 @@ const UpdateProduct = () => {
     }
 
     try {
-      const response = await axios.put(`/api/products/all/${productId}`, product);
-      console.log('Product updated:', response.data);
+      await axios.put(`/api/products/all/${productId}`, product);
       alert('Product updated successfully!');
       navigate('/products');
       window.location.reload();
@@ -77,109 +78,40 @@ const UpdateProduct = () => {
   };
 
   if (loading) return <p>Loading product details...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
-    <div>
+    <div className="update-product-container">
       <h2>Update Product</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Product Name:</label>
-          <input
-            type="text"
-            name="productName"
-            value={product.productName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Description:</label>
-          <textarea
-            name="description"
-            value={product.description}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Image URL:</label>
-          <input
-            type="text"
-            name="image"
-            value={product.image}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Original Price:</label>
-          <input
-            type="number"
-            name="originalPrice"
-            value={product.originalPrice}
-            onChange={handleChange}
-            required
-            min="0"
-          />
-        </div>
-        <div>
-          <label>Discount Price:</label>
-          <input
-            type="number"
-            name="discountPrice"
-            value={product.discountPrice}
-            onChange={handleChange}
-            required
-            min="0"
-          />
-        </div>
-        <div>
-          <label>Selling Price:</label>
-          <input
-            type="number"
-            name="sellingPrice"
-            value={product.sellingPrice}
-            onChange={handleChange}
-            required
-            min="0"
-          />
-        </div>
-        <div>
-          <label>Quantity:</label>
-          <input
-            type="number"
-            name="quantity"
-            value={product.quantity}
-            onChange={handleChange}
-            required
-            min="0"
-          />
-        </div>
-        <div>
-          <label>UOM (Unit of Measurement):</label>
-          <input
-            type="text"
-            name="uom"
-            value={product.uom}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>HSN Code:</label>
-          <input
-            type="text"
-            name="hsnCode"
-            value={product.hsnCode}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        {Object.entries(product)
+          .filter(([key]) => !['_id', '__v'].includes(key)) // Filter out _id and __v
+          .map(([key, value]) => (
+            <div className="form-group" key={key}>
+              <label>{key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1')}:</label>
+              {key === 'description' ? (
+                <textarea
+                  name={key}
+                  value={value}
+                  onChange={handleChange}
+                  required
+                />
+              ) : (
+                <input
+                  type={key.includes('Price') || key === 'quantity' ? 'number' : 'text'}
+                  name={key}
+                  value={value}
+                  onChange={handleChange}
+                  required
+                  min={key.includes('Price') || key === 'quantity' ? '0' : undefined}
+                />
+              )}
+            </div>
+          ))}
+
         <button type="submit" disabled={updating}>
           {updating ? 'Updating...' : 'Update Product'}
         </button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </div>
   );

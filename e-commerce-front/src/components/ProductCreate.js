@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
+import './ProductCreate.css'; // Import CSS for styling
 
 const ProductCreate = () => {
   const navigate = useNavigate();
@@ -17,6 +18,9 @@ const ProductCreate = () => {
     hsnCode: '',
   });
 
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct((prev) => ({
@@ -30,19 +34,25 @@ const ProductCreate = () => {
     try {
       const response = await axios.post('/api/products', product);
       console.log('Product created:', response.data);
-      alert('Product added successfully!');
-      navigate('/productList');
-      window.location.reload();
+      setSuccess('Product added successfully!');
+      setError('');
+      setTimeout(() => {
+        navigate('/productList');
+      }, 1500);
     } catch (error) {
       console.error('Error creating product:', error);
+      setError('Error creating product. Please try again.');
+      setSuccess('');
     }
   };
 
   return (
-    <div>
+    <div className="product-create-container">
       <h2>Add Product</h2>
+      {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">{success}</p>}
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="form-group">
           <label>Product Name:</label>
           <input
             type="text"
@@ -52,7 +62,7 @@ const ProductCreate = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Description:</label>
           <textarea
             name="description"
@@ -61,7 +71,7 @@ const ProductCreate = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Image URL:</label>
           <input
             type="text"
@@ -71,7 +81,7 @@ const ProductCreate = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Original Price:</label>
           <input
             type="number"
@@ -81,7 +91,7 @@ const ProductCreate = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Discount Price:</label>
           <input
             type="number"
@@ -91,7 +101,7 @@ const ProductCreate = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Selling Price:</label>
           <input
             type="number"
@@ -101,7 +111,7 @@ const ProductCreate = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Quantity:</label>
           <input
             type="number"
@@ -111,7 +121,7 @@ const ProductCreate = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>UOM (Unit of Measurement):</label>
           <input
             type="text"
@@ -121,7 +131,7 @@ const ProductCreate = () => {
             required
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>HSN Code:</label>
           <input
             type="text"

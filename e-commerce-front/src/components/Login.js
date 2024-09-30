@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import './Login.css';
 
 const Login = ({ setToken }) => {
   const { login } = useAuth();
-
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -31,10 +31,10 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className="login-container">
+      <h2 className="login-title">Login</h2>
+      {error && <p className="error-message">{error}</p>}
+      <form onSubmit={handleSubmit} className="login-form">
         <input
           type="email"
           name="email"
@@ -42,6 +42,7 @@ const Login = ({ setToken }) => {
           onChange={handleChange}
           placeholder="Email"
           required
+          className="login-input"
         />
         <input
           type="password"
@@ -50,8 +51,9 @@ const Login = ({ setToken }) => {
           onChange={handleChange}
           placeholder="Password"
           required
+          className="login-input"
         />
-        <button type="submit">Login</button>
+        <button type="submit" className="login-button">Login</button>
       </form>
     </div>
   );

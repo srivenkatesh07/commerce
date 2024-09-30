@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios'; 
 import { useCart } from '../context/CartContext';
-import './ProductList.css';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import './ProductList.css';
 
 const ProductList = () => {
   const navigate = useNavigate();
@@ -43,11 +43,10 @@ const ProductList = () => {
       alert('This product is out of stock.');
     }
   };
+
   const handleUpdateProduct = (product) => {
     navigate(`/updateProduct/${product._id}`);
   };
-
-  
 
   if (loading) return <p>Loading products...</p>;
   if (error) return <p>{error}</p>;
@@ -60,22 +59,23 @@ const ProductList = () => {
         placeholder="Search products..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
       />
       <div className="product-grid">
-        {filteredProducts.map((product, index) => (
-          <div key={`${product._id}-${index}`} className="product-card">
-            <img src={product.image} alt={product.productName} />
+        {filteredProducts.map((product) => (
+          <div key={product._id} className="product-card">
+            <img src={product.image} alt={product.productName} className="product-image" />
             <h3>{product.productName}</h3>
             <p>{product.description}</p>
-            <p>Original Price: ${product.originalPrice}</p>
-            <p>Discount Price: ${product.discountPrice}</p>
-            <p>Selling Price: ${product.sellingPrice}</p>
+            <p className="price">Original Price: <span>${product.originalPrice}</span></p>
+            <p className="price">Discount Price: <span>${product.discountPrice}</span></p>
+            <p className="price">Selling Price: <span>${product.sellingPrice}</span></p>
             <p>Quantity: {product.quantity} {product.uom}</p>
             <p>HSN Code: {product.hsnCode}</p>
-            {user && user.role === 'admin' ? ( 
-              <button onClick={() => handleUpdateProduct(product)}>Update Product</button>
+            {user && user.role === 'admin' ? (
+              <button onClick={() => handleUpdateProduct(product)} className="update-button">Update Product</button>
             ) : (
-              <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
+              <button onClick={() => handleAddToCart(product)} className="add-to-cart-button">Add to Cart</button>
             )}
           </div>
         ))}

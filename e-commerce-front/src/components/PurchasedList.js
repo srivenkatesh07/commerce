@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios'; 
 import { useAuth } from '../context/AuthContext';
+import './PurchasedList.css'; // Import CSS for styling
 
 const PurchasedList = () => {
   const { user } = useAuth(); 
@@ -12,8 +13,8 @@ const PurchasedList = () => {
     const fetchPurchasedItems = async () => {
       try {
         const response = await axios.get('/api/purchases', {
-            params: { userId: user.id }
-          });
+          params: { userId: user.id }
+        });
        
         const allProducts = response.data.flatMap(purchase => 
           purchase.products.map(product => ({
@@ -40,22 +41,22 @@ const PurchasedList = () => {
   }, [user]); 
 
   if (loading) return <p>Loading purchased items...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p className="error-message">{error}</p>;
 
   return (
-    <div>
+    <div className="purchased-list-container">
       <h2>Your Purchased Items</h2>
       {purchasedItems.length === 0 ? (
         <p>No purchased items found.</p>
       ) : (
-        <ul>
+        <ul className="purchased-items-list">
           {purchasedItems.map(item => (
-            <li key={`${item.productId}-${item.quantity}`}> 
+            <li key={`${item.productId}-${item.quantity}`} className="purchased-item"> 
               <h3>{item.productName}</h3>
-              <p>Quantity: {item.quantity}</p>
-              <p>Price: ${item.sellingPrice ? item.sellingPrice.toFixed(2) : '0.00'}</p>
-              <p>Total: ${(item.sellingPrice && item.quantity) ? (item.sellingPrice * item.quantity).toFixed(2) : '0.00'}</p>
-              <p>Purchased Date: {new Date(item.createdAt).toLocaleString()}</p> 
+              <p><strong>Quantity:</strong> {item.quantity}</p>
+              <p><strong>Price:</strong> ${item.sellingPrice ? item.sellingPrice.toFixed(2) : '0.00'}</p>
+              <p><strong>Total:</strong> ${(item.sellingPrice && item.quantity) ? (item.sellingPrice * item.quantity).toFixed(2) : '0.00'}</p>
+              <p><strong>Purchased Date:</strong> {new Date(item.createdAt).toLocaleString()}</p> 
             </li>
           ))}
         </ul>

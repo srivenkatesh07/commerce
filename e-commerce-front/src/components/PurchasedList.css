@@ -1,0 +1,39 @@
+.purchased-list-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  .error-message {
+    color: red;
+    text-align: center;
+  }
+  
+  .purchased-items-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .purchased-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px 0;
+  }
+  
+  .purchased-item h3 {
+    margin: 0;
+  }
+  
+  .purchased-item p {
+    margin: 5px 0;
+  }
+  

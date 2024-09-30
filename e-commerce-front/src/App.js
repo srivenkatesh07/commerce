@@ -11,6 +11,7 @@ import Checkout from './components/Checkout';
 import OrderSummary from './components/OrderSummary';
 import ProductCreate from './components/ProductCreate';
 import UpdateProduct from './components/UpdateProduct';
+import UserList from './components/UserList';
 
 import Navbar from './components/Navbar'; 
 import PurchasedList from './components/PurchasedList';
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="/product" element={<ProductCreate />} />
               <Route path="/purchasedList" element={<PurchasedList />} />
               <Route path="/updateProduct/:productId" element={<UpdateProduct />} />
+              <Route path="/userList" element={<UserList />} />
               <Route path="/" element={<Home token={token} />} />
               
             </Routes>

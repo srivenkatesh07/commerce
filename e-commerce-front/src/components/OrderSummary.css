@@ -1,0 +1,53 @@
+.order-summary-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  .no-order-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #888;
+  }
+  
+  .ordered-items-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .ordered-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+  }
+  
+  .total-amount {
+    text-align: right;
+    font-weight: bold;
+  }
+  
+  .go-to-products-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .go-to-products-button:hover {
+    background-color: #2980b9;
+  }
+  

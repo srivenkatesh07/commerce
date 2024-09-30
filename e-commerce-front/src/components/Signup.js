@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from '../api/axios';
+import './Signup.css';
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     username: '',
@@ -21,17 +23,17 @@ const Signup = () => {
       setError(null);
       setFormData({ username: '', email: '', password: '' });
     } catch (err) {
-      setError(err.response.data.error || 'Error signing up');
+      setError(err.response?.data?.error || 'Error signing up');
       setSuccess(null);
     }
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
-      <form onSubmit={handleSubmit}>
+    <div className="signup-container">
+      <h2 className="signup-title">Signup</h2>
+      {error && <p className="error-message">{error}</p>}
+      {success && <p className="success-message">{success}</p>}
+      <form onSubmit={handleSubmit} className="signup-form">
         <input
           type="text"
           name="username"
@@ -39,6 +41,7 @@ const Signup = () => {
           onChange={handleChange}
           placeholder="Username"
           required
+          className="signup-input"
         />
         <input
           type="email"
@@ -47,6 +50,7 @@ const Signup = () => {
           onChange={handleChange}
           placeholder="Email"
           required
+          className="signup-input"
         />
         <input
           type="password"
@@ -55,8 +59,9 @@ const Signup = () => {
           onChange={handleChange}
           placeholder="Password"
           required
+          className="signup-input"
         />
-        <button type="submit">Signup</button>
+        <button type="submit" className="signup-button">Signup</button>
       </form>
     </div>
   );

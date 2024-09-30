@@ -16,9 +16,6 @@ router.get('/', async (req, res) => {
     }
   });
   
-
-
-
 router.post('/', async (req, res) => {
     const { userId, products, totalAmount, paymentMethod, address } = req.body;
     try {

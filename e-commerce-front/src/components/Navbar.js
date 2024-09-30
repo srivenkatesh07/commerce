@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import './Navbar.css'; // Import the CSS file for styling
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -13,66 +14,56 @@ const Navbar = () => {
     logout();
     navigate('/');
     window.location.reload();
-  }; 
+  };
   const itemCount = getTotalItems();
 
   return (
-    <nav>
-      <ul style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-       {/* common */}
-        <li style={{ marginRight: '20px' }}>
-            <Link to="/">Home</Link>
+    <nav className="navbar">
+      <ul className="navbar-list">
+        <li className="navbar-item">
+          <Link to="/">Home</Link>
         </li>
 
-        {/* for admin */}
-        <li style={{ marginRight: '20px' }}>
-          {user !=undefined && user.role != undefined && user.role !=null && user.role == "admin" ? (
-            <Link to="/product">Add Products</Link>
-          ) : null}
-        </li>
+        {/* Admin Links */}
+        {user?.role === "admin" && (
+          <>
+            <li className="navbar-item">
+              <Link to="/userList">User List</Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/products">Product List</Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/product">Add Products</Link>
+            </li>
+          </>
+        )}
 
-        <li style={{ marginRight: '20px' }}>
-          {user !=undefined && user.role != undefined && user.role !=null && user.role == "admin" ? (
-            <Link to="/products">Product List</Link>
-          ) : null}
-        </li>
+        {/* Customer Links */}
+        {user?.role !== "admin" && user && (
+          <>
+            <li className="navbar-item">
+              <Link to="/products">Products</Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/purchasedList">Purchased List</Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/cart">Cart {itemCount > 0 && `(${itemCount})`}</Link>
+            </li>
+          </>
+        )}
 
-        {/* for customers */}
-        <li style={{ marginRight: '20px' }}>
-          {user !=undefined && user.role != undefined && user.role !=null && user.role !== "admin" ? (
-            <Link to="/products">Products</Link>
-          ) : null}
-        </li>
-
-        <li style={{ marginRight: '20px' }}>
-          {user !=undefined && user.role != undefined && user.role !=null && user.role !== "admin" ? (
-            <Link to="/purchasedList">Purchased List</Link>
-          ) : null}
-        </li>
-
-        <li style={{ marginRight: '20px' }}>
-          {user !=undefined && user.role != undefined && user.role !=null && user.role !== "admin" ? (
-            <Link to="/cart">Cart {itemCount > 0 && `(${itemCount})`}</Link>
-          ) : null}
-        </li>
-
-        {/* common */}
-        <li style={{ marginRight: '20px' }}>
-          {user !=undefined && user.role !=undefined && user.role !=null && user.role !=='' ? (
+        {/* common Links */}
+        <li className="navbar-item auth-links">
+          {user ? (
             <Link onClick={handleLogout}>Logout</Link>
-          ) : null}
-        </li>
-
-        <li style={{ marginRight: '20px' }}>
-          {user ==undefined || user.role ==undefined || user.role ==null ? (
-            <Link to="/login">login</Link>
-          ) : null}
-        </li>
-
-        <li style={{ marginRight: '20px' }}>
-          {user ==undefined || user.role == undefined || user.role ==null ? (
-            <Link to="/signup">signup</Link>
-          ) : null}
+          ) : (
+            <>
+              <Link to="/login" className="auth-link">Login</Link>
+              <Link to="/signup" className="auth-link">Signup</Link>
+            </>
+          )}
         </li>
 
       </ul>
